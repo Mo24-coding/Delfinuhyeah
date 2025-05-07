@@ -18,7 +18,7 @@ public class Main {
                 case "2":
                     editMember();
                     break;
-                cas3":
+                case "3":
                 deleteMember();
                 break;
                 case "4":
