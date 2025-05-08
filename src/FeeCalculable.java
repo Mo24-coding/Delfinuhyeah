@@ -3,7 +3,7 @@ public interface FeeCalculable {
 }
 
 public class Subscription implements FeeCalculable {
-    private MembershipType membershipType;
+    private Member.MembershipType membershipType;
     private int age;
 
     // Constructor, getters, setters...
@@ -11,6 +11,7 @@ public class Subscription implements FeeCalculable {
     @Override
     public double calculateFee() {
         // Beregn kontingent baseret på regler
+        return calculateFee();
     }
 }
 
