@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
 public class Menu {
-    private static final MemberDatabase database = new MemberDatabase();
-    private static final Scanner scanner = new Scanner(System.in);
+    private final MemberDatabase database = new MemberDatabase();
+    private final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public void visMenu() {
         boolean running = true;
 
         while (running) {
@@ -43,7 +43,7 @@ public class Menu {
         }
     }
 
-    private static void printMenu() {
+    private void printMenu() {
         System.out.println("\n--- Svømmeklubben Delfinen ---");
         System.out.println("1. Opret medlem");
         System.out.println("2. Rediger medlem");
@@ -56,7 +56,7 @@ public class Menu {
         System.out.print("Vælg en mulighed: ");
     }
 
-    private static void createMember() {
+    private void createMember() {
         System.out.print("Navn: ");
         String name = scanner.nextLine();
         System.out.print("Alder: ");
@@ -77,7 +77,7 @@ public class Menu {
         System.out.println("Medlem oprettet.");
     }
 
-    private static void editMember() {
+    private void editMember() {
         System.out.print("Indtast navnet på det medlem, der skal redigeres: ");
         String name = scanner.nextLine();
         Member existing = database.findMemberByName(name);
@@ -107,7 +107,7 @@ public class Menu {
         System.out.println("Medlem opdateret.");
     }
 
-    private static void deleteMember() {
+    private void deleteMember() {
         System.out.print("Indtast navnet på det medlem, der skal slettes: ");
         String name = scanner.nextLine();
         Member member = database.findMemberByName(name);
@@ -120,7 +120,7 @@ public class Menu {
         }
     }
 
-    private static void listMembers() {
+    private void listMembers() {
         System.out.println("\n--- Alle medlemmer ---");
         for (Member m : database.getAllMembers()) {
             System.out.println(m);
@@ -128,17 +128,17 @@ public class Menu {
         }
     }
 
-    private static void showTop5Swimmers() {
+    private void showTop5Swimmers() {
         // TODO: Implementér logik til at vise top 5 konkurrencesvømmere baseret på træningsresultater
         System.out.println("Top 5 svømmere (kommer snart).");
     }
 
-    private static void showTrainingResults() {
+    private void showTrainingResults() {
         // TODO: Implementér visning af alle træningsresultater for konkurrencesvømmere
         System.out.println("Træningsresultater (kommer snart).");
     }
 
-    private static void calculateSubscription() {
+    private void calculateSubscription() {
         // TODO: Beregn og vis kontingent for alle medlemmer
         System.out.println("Kontingentberegning (kommer snart).");
     }
