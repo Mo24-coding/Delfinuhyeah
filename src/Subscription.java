@@ -1,3 +1,4 @@
+
 public class Subscription implements dk.delfinen.FeeCalculable {
     public enum MembershipType {
         AKTIV,
