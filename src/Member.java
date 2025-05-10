@@ -1,10 +1,12 @@
 public class Member {
     private String name;
     private int age;
-    private String contactInfo;
+    private String phoneNumber;
     private boolean isActive; // true = aktiv, false = passiv
     private MembershipType membershipType; // JUNIOR/SENIOR
     private ActivityType activityType;     // MOTIONIST/KONKURRENCE
+    private static int idCounter = 1;
+    private int memberId;
 
     public enum MembershipType {
         JUNIOR,
@@ -17,14 +19,15 @@ public class Member {
     }
 
     // Constructor
-    public Member(String name, int age, String contactInfo, boolean isActive,
+    public Member(String name, int age, String phoneNumber, boolean isActive,
                   MembershipType membershipType, ActivityType activityType) {
         this.name = name;
         this.age = age;
-        this.contactInfo = contactInfo;
+        this.phoneNumber = phoneNumber;
         this.isActive = isActive;
         this.membershipType = membershipType;
         this.activityType = activityType;
+        this.memberId = idCounter++;
     }
 
     // Getters og Setters
@@ -44,12 +47,12 @@ public class Member {
         this.age = age;
     }
 
-    public String getContactInfo() {
-        return contactInfo;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isActive() {
@@ -76,12 +79,16 @@ public class Member {
         this.activityType = activityType;
     }
 
+    public int getMemberId() {
+        return memberId;
+    }
+
     // Rediger alle oplysninger
     public void updateMember(String name, int age, String contactInfo, boolean isActive,
                              MembershipType membershipType, ActivityType activityType) {
         this.name = name;
         this.age = age;
-        this.contactInfo = contactInfo;
+        this.phoneNumber = contactInfo;
         this.isActive = isActive;
         this.membershipType = membershipType;
         this.activityType = activityType;
@@ -89,9 +96,9 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Navn: " + name + "\nAlder: " + age + "\nKontakt: " + contactInfo +
+        return "Navn: " + name + "\nAlder: " + age + "\nTlf: " + phoneNumber +
                 "\nStatus: " + (isActive ? "Aktiv" : "Passiv") +
                 "\nMedlemstype: " + membershipType +
-                "\nAktivitetsform: " + activityType;
+                "\nAktivitetsform: " + activityType + "\nMedlemsID: " + memberId;
     }
 }

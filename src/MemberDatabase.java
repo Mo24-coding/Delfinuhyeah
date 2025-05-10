@@ -26,7 +26,7 @@ public class MemberDatabase {
             member.updateMember(
                     newInfo.getName(),
                     newInfo.getAge(),
-                    newInfo.getContactInfo(),
+                    newInfo.getPhoneNumber(),
                     newInfo.isActive(),
                     newInfo.getMembershipType(),
                     newInfo.getActivityType()
