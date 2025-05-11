@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public class TrainingResult { // Class with all attributes etc needed for SwimmerDatabase class
+public class SwimmerResult { // Class with all attributes etc needed for SwimmerDatabase class
 
     public enum Discipline {
         CRAWL, BUTTERFLY, BRYSTSVØMNING, RYGCRAWL
@@ -11,7 +11,7 @@ public class TrainingResult { // Class with all attributes etc needed for Swimme
     private LocalDate date;
     private int memberId;
 
-    public TrainingResult(Discipline discipline, double time, LocalDate date, int memberId) {
+    public SwimmerResult(Discipline discipline, double time, LocalDate date, int memberId) {
         this.discipline = discipline;
         this.time = time;
         this.date = date;

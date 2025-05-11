@@ -163,18 +163,18 @@ public class Menu {
 
             // Shows a list of possible disciplines
             System.out.println("Vælg disciplin:");
-            for (int i = 0; i < TrainingResult.Discipline.values().length; i++) {
-                System.out.println((i + 1) + ". " + TrainingResult.Discipline.values()[i]);
+            for (int i = 0; i < SwimmerResult.Discipline.values().length; i++) {
+                System.out.println((i + 1) + ". " + SwimmerResult.Discipline.values()[i]);
             }
 
             int disciplinValg;
             do {
-                System.out.print("Indtast nummer (1-" + TrainingResult.Discipline.values().length + "): ");
+                System.out.print("Indtast nummer (1-" + SwimmerResult.Discipline.values().length + "): ");
                 disciplinValg = scanner.nextInt();
                 scanner.nextLine();
-            } while (disciplinValg < 1 || disciplinValg > TrainingResult.Discipline.values().length);
+            } while (disciplinValg < 1 || disciplinValg > SwimmerResult.Discipline.values().length);
 
-            TrainingResult.Discipline disciplines = TrainingResult.Discipline.values()[disciplinValg - 1];
+            SwimmerResult.Discipline disciplines = SwimmerResult.Discipline.values()[disciplinValg - 1];
 
             // Adds time result
             System.out.print("Indtast tid (mm:ss): ");
@@ -194,6 +194,7 @@ public class Menu {
         System.out.println("1. Junior");
         System.out.println("2. Senior");
         System.out.print("Valg: ");
+
         int groupChoice = scanner.nextInt();
         scanner.nextLine();
 
@@ -205,7 +206,7 @@ public class Menu {
         }
 
         System.out.println("Vælg disciplin:");
-        TrainingResult.Discipline[] disciplines = TrainingResult.Discipline.values();
+        SwimmerResult.Discipline[] disciplines = SwimmerResult.Discipline.values();
         for (int i = 0; i < disciplines.length; i++) {
             System.out.println((i + 1) + ". " + disciplines[i]);
         }
@@ -219,7 +220,7 @@ public class Menu {
             return;
         }
 
-        TrainingResult.Discipline selectedDiscipline = disciplines[disciplineChoice - 1];
+        SwimmerResult.Discipline selectedDiscipline = disciplines[disciplineChoice - 1];
 
         swimmerDb.sortTop5Swimmers(
                 selectedDiscipline,

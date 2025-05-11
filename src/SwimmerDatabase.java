@@ -6,14 +6,14 @@ import java.time.format.DateTimeParseException;
 public class SwimmerDatabase {
 
     private MemberDatabase memberDatabase;
-    private List<TrainingResult> swimmers = new ArrayList<>(); // new list for swimmers
+    private List<SwimmerResult> swimmers = new ArrayList<>(); // new list for swimmers
 
     public SwimmerDatabase(MemberDatabase memberDatabase) {
         this.memberDatabase = memberDatabase;
     }
 
     // Method that formats date+time and adds new member to swimmer list
-    public void addSwimmer(int memberId, TrainingResult.Discipline discipline, String timeString, String dateString) {
+    public void addSwimmer(int memberId, SwimmerResult.Discipline discipline, String timeString, String dateString) {
 
         Member medlem = findSwimmerById(memberId);
         if (medlem != null) {
@@ -41,7 +41,7 @@ public class SwimmerDatabase {
             }
 
             // Adds new swimmer object to the list
-            TrainingResult tr = new TrainingResult(discipline, seconds, date, memberId);
+            SwimmerResult tr = new SwimmerResult(discipline, seconds, date, memberId);
             swimmers.add(tr);
         } else {
             System.out.println("Medlem med ID " + memberId + " findes ikke som aktiv konkurrencesvømmer.");
@@ -49,7 +49,7 @@ public class SwimmerDatabase {
     }
 
     // Finds valid member who is active and has activity type "konkurrence"
-    private Member findSwimmerById(int memberId) {
+    public Member findSwimmerById(int memberId) {
         for (Member m : memberDatabase.getAllMembers()) {
             if (m.getMemberId() == memberId && m.isActive() && m.getActivityType() == Member.ActivityType.KONKURRENCE) {
                 return m;
@@ -62,10 +62,10 @@ public class SwimmerDatabase {
     public void showSwimmerList() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        for (TrainingResult trainingResults : swimmers) {
-            Member member = findSwimmerById(trainingResults.getMemberId());
-            int minutes = (int) trainingResults.getTime() / 60;
-            int seconds = (int) trainingResults.getTime() % 60;
+        for (SwimmerResult swimmerResults : swimmers) {
+            Member member = findSwimmerById(swimmerResults.getMemberId());
+            int minutes = (int) swimmerResults.getTime() / 60;
+            int seconds = (int) swimmerResults.getTime() % 60;
             String timeFormatted = String.format("%02d:%02d", minutes, seconds);
 
             if (member != null) {
@@ -77,19 +77,19 @@ public class SwimmerDatabase {
                         " | Aktivitetsform: " + member.getActivityType());
             }
 
-            System.out.println("  -> Disciplin: " + trainingResults.getDiscipline() +
+            System.out.println("  -> Disciplin: " + swimmerResults.getDiscipline() +
                     " | Tid: " + timeFormatted +
-                    " | Dato: " + trainingResults.getDate().format(formatter));
+                    " | Dato: " + swimmerResults.getDate().format(formatter));
             System.out.println();
         }
     }
 
     // Methods that filters/sort the list for discipline and age groups
-    public void sortTop5Swimmers(TrainingResult.Discipline discipline, Member.MembershipType groupType, DateTimeFormatter formatter) {
+    public void sortTop5Swimmers(SwimmerResult.Discipline discipline, Member.MembershipType groupType, DateTimeFormatter formatter) {
         System.out.println("  [" + groupType + "]");
-        List<TrainingResult> filtered = new ArrayList<>();
+        List<SwimmerResult> filtered = new ArrayList<>();
 
-        for (TrainingResult tr : swimmers) {
+        for (SwimmerResult tr : swimmers) {
             if (tr.getDiscipline() == discipline) {
                 Member m = findSwimmerById(tr.getMemberId());
                 if (m != null && m.getMembershipType() == groupType) {
@@ -99,11 +99,11 @@ public class SwimmerDatabase {
         }
 
         // Sort by fastest time with comparator method
-        filtered.sort(Comparator.comparingDouble(TrainingResult::getTime));
+        filtered.sort(Comparator.comparingDouble(SwimmerResult::getTime));
 
         // Prints top 5 swimmers
         for (int i = 0; i < Math.min(5, filtered.size()); i++) {
-            TrainingResult tr = filtered.get(i);
+            SwimmerResult tr = filtered.get(i);
             Member member = findSwimmerById(tr.getMemberId());
             if (member == null) continue;
 
