@@ -5,7 +5,9 @@ public class Club {
         Scanner scanner = new Scanner(System.in);
         MemberDatabase memberDb = new MemberDatabase();
         SwimmerDatabase swimmerDb = new SwimmerDatabase(memberDb);
-        Menu menu = new Menu(memberDb, swimmerDb);
-        menu.visMenu(scanner);
+        CompetitionDatabase competitionDB = new CompetitionDatabase(swimmerDb);
+        //swimmerDb.populateTestSwimmers();     // TEST CODE - IKKE SLET
+        Menu menu = new Menu(memberDb, swimmerDb, competitionDB);
+        menu.showMenu(scanner);
     }
 }

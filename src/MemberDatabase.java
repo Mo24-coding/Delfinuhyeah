@@ -34,6 +34,14 @@ public class MemberDatabase {
         }
     }
 
+    public void listMembers() {
+        System.out.println("\n--- Alle medlemmer ---");
+        for (Member m : getAllMembers()) {
+            System.out.println(m);
+            System.out.println("-----------------------");
+        }
+    }
+
     public ArrayList<Member> getAllMembers() {
         return members;
     }

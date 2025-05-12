@@ -1,3 +1,4 @@
+import static utility.Colors.*;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,13 +13,14 @@ public class SwimmerDatabase {
         this.memberDatabase = memberDatabase;
     }
 
-    // Method that formats date+time and adds new member to swimmer list
+    //Method that takes input from createSwimmers() method and adds objects to swimmers[] list
     public void addSwimmer(int memberId, SwimmerResult.Discipline discipline, String timeString, String dateString) {
 
+        // Finds swimmer by ID
         Member medlem = findSwimmerById(memberId);
         if (medlem != null) {
 
-            // Converts time to total seconds
+            // Converts time string from mm:ss to total seconds (double) for sorting and calculations
             double seconds;
             try {
                 String[] parts = timeString.split(":");
@@ -30,7 +32,7 @@ public class SwimmerDatabase {
                 return;
             }
 
-            // Convert date to localdate
+            // Convert date string to localdate
             LocalDate date;
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -40,7 +42,7 @@ public class SwimmerDatabase {
                 return;
             }
 
-            // Adds new swimmer object to the list
+            // Adds new swimmer object to the swimmers[] list
             SwimmerResult tr = new SwimmerResult(discipline, seconds, date, memberId);
             swimmers.add(tr);
         } else {
@@ -58,7 +60,7 @@ public class SwimmerDatabase {
         return null;
     }
 
-    // Shows a list of all swimmers with a for loop and converts date+time to a different format
+    // Shows a list of all swimmers with a for loop and converts date+time to a string format
     public void showSwimmerList() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -84,37 +86,93 @@ public class SwimmerDatabase {
         }
     }
 
-    // Methods that filters/sort the list for discipline and age groups
-    public void sortTop5Swimmers(SwimmerResult.Discipline discipline, Member.MembershipType groupType, DateTimeFormatter formatter) {
-        System.out.println("  [" + groupType + "]");
-        List<SwimmerResult> filtered = new ArrayList<>();
+    // Method that sorts and prints a top 5 list for every discipline in both age groups as a table format
+    public void top5ListForSvimmwers() {
+        // Loop that goes through all disciplines
+        for (SwimmerResult.Discipline discipline : SwimmerResult.Discipline.values()) {
 
-        for (SwimmerResult tr : swimmers) {
-            if (tr.getDiscipline() == discipline) {
-                Member m = findSwimmerById(tr.getMemberId());
-                if (m != null && m.getMembershipType() == groupType) {
-                    filtered.add(tr);
+            List<SwimmerResult> seniorList = new ArrayList<>();
+            List<SwimmerResult> juniorList = new ArrayList<>();
+
+            // Filters competitors by discipline and age groups then adds to senior[] or junior[] lists
+            for (SwimmerResult result : swimmers) {
+                if (result.getDiscipline() == discipline) {
+                    Member m = findSwimmerById(result.getMemberId());
+                    if (m != null) {
+                        if (m.getMembershipType() == Member.MembershipType.SENIOR) {
+                            seniorList.add(result);
+                        } else if (m.getMembershipType() == Member.MembershipType.JUNIOR) {
+                            juniorList.add(result);
+                        }
+                    }
                 }
             }
-        }
 
-        // Sort by fastest time with comparator method
-        filtered.sort(Comparator.comparingDouble(SwimmerResult::getTime));
+            // Sorts by fastest time with comparator
+            seniorList.sort(Comparator.comparingDouble(SwimmerResult::getTime));
+            juniorList.sort(Comparator.comparingDouble(SwimmerResult::getTime));
 
-        // Prints top 5 swimmers
-        for (int i = 0; i < Math.min(5, filtered.size()); i++) {
-            SwimmerResult tr = filtered.get(i);
-            Member member = findSwimmerById(tr.getMemberId());
-            if (member == null) continue;
+            // Titles
+            System.out.printf("\n%-35s | %-35s\n", blue("Top 5 SENIOR (" + discipline + ")"),
+                    blue("Top 5 JUNIOR (" + discipline + ")"));
 
-            int minutes = (int) tr.getTime() / 60;
-            int seconds = (int) tr.getTime() % 60;
-            String timeFormatted = String.format("%02d:%02d", minutes, seconds);
+            // Limits to print 5 members in each category
+            int seniorSize = Math.min(seniorList.size(), 5);
+            int juniorSize = Math.min(juniorList.size(), 5);
+            int rows = Math.max(seniorSize, juniorSize);
 
-            System.out.println("    Navn: " + member.getName() +
-                    " | Alder: " + member.getAge() +
-                    " | Tid: " + timeFormatted +
-                    " | Dato: " + tr.getDate().format(formatter));
+            if (rows == 0) {
+                System.out.println(red("Mangler Data..."));
+                continue;
+            }
+
+            // Loop that prints top 5 in every category
+            for (int i = 0; i < rows; i++) {
+                String seniorEntry = "", juniorEntry = "";
+
+                if (i < seniorSize) {
+                    SwimmerResult sr = seniorList.get(i);
+                    Member m = findSwimmerById(sr.getMemberId());
+                    String name = String.format("%s (ID:%d)", m.getName(), m.getMemberId());
+                    String time = green(String.format("%02d:%02d", (int)(sr.getTime() / 60), (int)(sr.getTime() % 60)));
+                    seniorEntry = String.format("%s %-22s | %-7s", yellow("#" + (i + 1)), name, time);
+                }
+
+                if (i < juniorSize) {
+                    SwimmerResult jr = juniorList.get(i);
+                    Member m = findSwimmerById(jr.getMemberId());
+                    String name = String.format("%s (ID:%d)", m.getName(), m.getMemberId());
+                    String time = green(String.format("%02d:%02d", (int)(jr.getTime() / 60), (int)(jr.getTime() % 60)));
+                    juniorEntry = String.format("%s %-22s | %-7s", yellow("#" + (i + 1)), name, time);
+                }
+
+                System.out.printf("%-35s | %-35s\n", seniorEntry, juniorEntry);
+            }
         }
     }
+
+    // TEST CODE - IKKE SLET
+/*
+    public void populateTestSwimmers() {
+        String[] juniorNames = {"Adam", "Emma", "Clara"};
+        String[] seniorNames = {"Jonas", "Anna", "Mads"};
+        int idCounter = 1;
+
+        for (SwimmerResult.Discipline discipline : SwimmerResult.Discipline.values()) {
+            for (String name : juniorNames) {
+                Member m = new Member(name, 14, "12345678", true, Member.MembershipType.SENIOR, Member.ActivityType.KONKURRENCE);
+                memberDatabase.getAllMembers().add(m); // direct add
+                swimmers.add(new SwimmerResult(discipline, 150 + idCounter, LocalDate.now(), idCounter));
+                idCounter++;
+            }
+            for (String name : seniorNames) {
+                Member m = new Member(name, 14, "12345678", true, Member.MembershipType.JUNIOR, Member.ActivityType.KONKURRENCE);
+                memberDatabase.getAllMembers().add(m);
+                swimmers.add(new SwimmerResult(discipline, 120 + idCounter, LocalDate.now(), idCounter));
+                idCounter++;
+            }
+        }
+    }
+*/
+
 }

@@ -11,6 +11,7 @@ public class SwimmerResult { // Class with all attributes etc needed for Swimmer
     private LocalDate date;
     private int memberId;
 
+    // Constructor
     public SwimmerResult(Discipline discipline, double time, LocalDate date, int memberId) {
         this.discipline = discipline;
         this.time = time;

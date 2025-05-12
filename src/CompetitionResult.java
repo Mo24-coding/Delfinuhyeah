@@ -1,4 +1,4 @@
-public class CompetitionResult {
+public class CompetitionResult { // Class with all attributes etc needed for CompetitionDatabase class
 
     public enum Competition {
         WORLD_SWIM_CUP, DANISH_SWIM_CUP
@@ -6,15 +6,13 @@ public class CompetitionResult {
 
     private int memberId;
     private Competition competition;
-    private SwimmerResult.Discipline discipline;
     private double time;
     private int ranking;
 
     // Constructor
-    public CompetitionResult(int memberId, Competition competition, SwimmerResult.Discipline discipline, double time, int ranking){
+    public CompetitionResult(int memberId, Competition competition, double time, int ranking){
         this.memberId = memberId;
         this.competition = competition;
-        this.discipline = discipline;
         this.time = time;
         this.ranking = ranking;
     }
@@ -28,9 +26,6 @@ public class CompetitionResult {
         return competition;
     }
 
-    public SwimmerResult.Discipline discipline () {
-        return discipline;
-    }
 
     public double getTime () {
         return time;

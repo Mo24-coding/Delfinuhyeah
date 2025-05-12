@@ -1,16 +1,18 @@
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Menu {
-    private final MemberDatabase database;
-    private final SwimmerDatabase swimmerDb;
+    private final MemberDatabase memberDatabase;
+    private final SwimmerDatabase swimmerDatabase;
+    private final CompetitionDatabase competitionDatabase;
 
-    public Menu(MemberDatabase database, SwimmerDatabase swimmerDb) {
-        this.database = database;
-        this.swimmerDb = swimmerDb;
+    public Menu(MemberDatabase memberDatabase, SwimmerDatabase swimmerDatabase, CompetitionDatabase competitionDatabase) {
+        this.memberDatabase = memberDatabase;
+        this.swimmerDatabase = swimmerDatabase;
+        this.competitionDatabase = competitionDatabase;
     }
 
-    public void visMenu(Scanner scanner) {
+    // Methods that creates a text-based menu that calls other methods
+    public void showMenu(Scanner scanner) {
 
         while (true) {
             System.out.println("\n--- Svømmeklubben Delfinen ---");
@@ -22,8 +24,9 @@ public class Menu {
             System.out.println("6. Vis alle svømmere");
             System.out.println("7. Vis top 5 svømmere");
             System.out.println("8. Opret konkurrencesvømmer");
-            System.out.println("9.  ......kontingent1");
-            System.out.println("10. 🔴 Afslut program");
+            System.out.println("9. Vis alle konkurrencesvømmer");
+            System.out.println("10. Mangler kontingent");
+            System.out.println("11. 🔴 Afslut program");
             System.out.print("Vælg en mulighed: ");
 
             try {
@@ -43,34 +46,39 @@ public class Menu {
                     returnToMenu(scanner);
                     break;
                 case 4:
-                    listMembers();
+                    memberDatabase.listMembers();
                     returnToMenu(scanner);
                     break;
                 case 5:
                     System.out.println("Viser liste med medlemmer...");
-                    listMembers();
+                    memberDatabase.listMembers();
                     createSwimmers(scanner);
                     returnToMenu(scanner);
                     break;
                 case 6:
-                    swimmerDb.showSwimmerList();
+                    swimmerDatabase.showSwimmerList();
                     returnToMenu(scanner);
                     break;
                 case 7:
-                    showTop5Svimmers(scanner);
+                    swimmerDatabase.top5ListForSvimmwers();
                     returnToMenu(scanner);
                     break;
                 case 8:
-                    System.out.println("Opret konkurrencesvømmer");
-                    System.out.println("mangler");
+                    System.out.println("Opretter konkurrencesvømmer");
+                    addSwimmerToCompetition(scanner);
                     returnToMenu(scanner);
                     break;
                 case 9:
+                    System.out.println("Viser liste med konkurrencesvømmer");
+                    competitionDatabase.showAllCompetitors();
+                    returnToMenu(scanner);
+                    break;
+                case 10:
                     System.out.println("......kontingent");
                     System.out.println("mangler");
                     returnToMenu(scanner);
                     break;
-                case 10:
+                case 11:
                     System.out.println("\n🔴 Afslutter programmet...");
                     return;
                 default:
@@ -83,6 +91,7 @@ public class Menu {
     }
 
 
+    // Method that creates a new member
     private void createMember(Scanner scanner) {
         System.out.print("Navn: ");
         String name = scanner.nextLine();
@@ -100,14 +109,15 @@ public class Menu {
         Member.ActivityType activityType = activityInput.equals("konkurrence") ? Member.ActivityType.KONKURRENCE : Member.ActivityType.MOTIONIST;
 
         Member member = new Member(name, age, contact, isActive, membershipType, activityType);
-        database.addMember(member);
+        memberDatabase.addMember(member);
         System.out.println("Medlem oprettet.");
     }
 
+    // Method that edits member data
     private void editMember(Scanner scanner) {
         System.out.print("Indtast navnet på det medlem, der skal redigeres: ");
         String name = scanner.nextLine();
-        Member existing = database.findMemberByName(name);
+        Member existing = memberDatabase.findMemberByName(name);
 
         if (existing == null) {
             System.out.println("Medlem ikke fundet.");
@@ -130,34 +140,28 @@ public class Menu {
         Member.ActivityType activityType = activityInput.equals("konkurrence") ? Member.ActivityType.KONKURRENCE : Member.ActivityType.MOTIONIST;
 
         Member newInfo = new Member(newName, newAge, newContact, isActive, membershipType, activityType);
-        database.editMember(name, newInfo);
+        memberDatabase.editMember(name, newInfo);
         System.out.println("Medlem opdateret.");
     }
 
+    // Method that deletes a member from the list
     private void deleteMember(Scanner scanner) {
         System.out.print("Indtast navnet på det medlem, der skal slettes: ");
         String name = scanner.nextLine();
-        Member member = database.findMemberByName(name);
+        Member member = memberDatabase.findMemberByName(name);
 
         if (member != null) {
-            database.removeMember(member);
+            memberDatabase.removeMember(member);
             System.out.println("Medlem slettet.");
         } else {
             System.out.println("Medlem ikke fundet.");
         }
     }
 
-    private void listMembers() {
-        System.out.println("\n--- Alle medlemmer ---");
-        for (Member m : database.getAllMembers()) {
-            System.out.println(m);
-            System.out.println("-----------------------");
-        }
-    }
 
-        // Method to add training results to a members and create swimmer
+        // Method that adds training results to a members and creates swimmer by using addSwimmer() method
         private void createSwimmers(Scanner scanner) {
-            System.out.print("Indtast medlem ID: ");
+            System.out.print("Indtast medlems-ID: ");
             int memberId = scanner.nextInt();
             scanner.nextLine();
 
@@ -176,56 +180,37 @@ public class Menu {
 
             SwimmerResult.Discipline disciplines = SwimmerResult.Discipline.values()[disciplinValg - 1];
 
-            // Adds time result
             System.out.print("Indtast tid (mm:ss): ");
             String tid = scanner.nextLine();
 
-            // Adds date of training
             System.out.print("Indtast dato (dd-MM-yyyy): ");
             String dato = scanner.nextLine();
 
 
-            swimmerDb.addSwimmer(memberId, disciplines, tid, dato);
+            swimmerDatabase.addSwimmer(memberId, disciplines, tid, dato);
         }
 
-        // Method that shows top 5 swimmers in each discipline for each age group
-    private void showTop5Svimmers(Scanner scanner) {
-        System.out.println("Vælg medlemsgruppe:");
-        System.out.println("1. Junior");
-        System.out.println("2. Senior");
-        System.out.print("Valg: ");
+    // Method that adds a swimmer to a competition (konkurrencesvømmer) from inputs
+    private void addSwimmerToCompetition(Scanner scanner) {
+        System.out.print("Indtast medlems-ID: ");
+        int memberId = Integer.parseInt(scanner.nextLine());
 
-        int groupChoice = scanner.nextInt();
-        scanner.nextLine();
-
-        Member.MembershipType groupType;
-        if (groupChoice == 1) {
-            groupType = Member.MembershipType.JUNIOR;
-        } else {
-            groupType = Member.MembershipType.SENIOR;
+        // Choose which competition
+        System.out.println("Vælg konkurrence:");
+        CompetitionResult.Competition[] comps = CompetitionResult.Competition.values();
+        for (int i = 0; i < comps.length; i++) {
+            System.out.println((i + 1) + ". " + comps[i]);
         }
+        int compChoice = Integer.parseInt(scanner.nextLine());
+        CompetitionResult.Competition competition = comps[compChoice - 1];
 
-        System.out.println("Vælg disciplin:");
-        SwimmerResult.Discipline[] disciplines = SwimmerResult.Discipline.values();
-        for (int i = 0; i < disciplines.length; i++) {
-            System.out.println((i + 1) + ". " + disciplines[i]);
-        }
+        System.out.print("Indtast tid (mm:ss): ");
+        String time = scanner.nextLine();
 
-        System.out.print("Valg: ");
-        int disciplineChoice = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("Indtast placering (Mellem 1-5): ");
+        int ranking = Integer.parseInt(scanner.nextLine());
 
-        if (disciplineChoice < 1 || disciplineChoice > disciplines.length) {
-            System.out.println("Ugyldigt disciplinvalg.");
-            return;
-        }
-
-        SwimmerResult.Discipline selectedDiscipline = disciplines[disciplineChoice - 1];
-
-        swimmerDb.sortTop5Swimmers(
-                selectedDiscipline,
-                groupType,
-                DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        competitionDatabase.addCompetitionToList(memberId, competition, time, ranking);
     }
 
 
