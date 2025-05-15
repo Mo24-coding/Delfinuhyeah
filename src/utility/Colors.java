@@ -23,4 +23,12 @@ public class Colors {
     public static String cyan(String text) {
         return "\u001B[36m" + text + "\u001B[0m";
     }
+
+    public static String magenta(String text) {
+        return "\u001B[35m" + text + "\u001B[0m";
+    }
+
+    public static String bold(String text) {
+        return "\u001B[1m" + text + "\u001B[0m";
+    }
 }

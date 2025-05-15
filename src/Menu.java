@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import static utility.Colors.*;
 
 public class Menu {
     private final MemberDatabase memberDatabase;
@@ -11,81 +12,183 @@ public class Menu {
         this.competitionDatabase = competitionDatabase;
     }
 
-    // Methods that creates a text-based menu that calls other methods
+    // Main menu method that creates a text-based menu that calls submenus
     public void showMenu(Scanner scanner) {
 
         while (true) {
-            System.out.println("\n--- Svømmeklubben Delfinen ---");
-            System.out.println("1. Opret medlem");
-            System.out.println("2. Rediger medlem");
-            System.out.println("3. Slet medlem");
-            System.out.println("4. Vis alle medlemmer");
-            System.out.println("5. Opret svømmer");
-            System.out.println("6. Vis alle svømmere");
-            System.out.println("7. Vis top 5 svømmere");
-            System.out.println("8. Opret konkurrencesvømmer");
-            System.out.println("9. Vis alle konkurrencesvømmer");
-            System.out.println("10. Mangler kontingent");
-            System.out.println("11. 🔴 Afslut program");
-            System.out.print("Vælg en mulighed: ");
+            System.out.println(bold(cyan("\n🐬  SvømmeKlubben DELFINEN  🐬")));
+            System.out.println(cyan("---------------------------------------------"));
+            System.out.println(blue("1️⃣  👔  Formand‑login"));
+            System.out.println(green("2️⃣  💰  Kasserer‑login"));
+            System.out.println(yellow("3️⃣  🏊‍♂️  Træner‑login"));
+            System.out.println(red("0️⃣  🔴  Afslut program"));
+            System.out.print(magenta("\nVælg en mulighed ➜ "));
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine()); //Reads input as String and parse (change) to int
 
             switch (choice) {
                 case 1:
-                    createMember(scanner);
-                    returnToMenu(scanner);
+                    System.out.println("\n🔐  Logget ind som " + bold("Formand"));
+                    subMenuChairman(scanner);
                     break;
                 case 2:
-                    editMember(scanner);
-                    returnToMenu(scanner);
+                    System.out.println("\n🔐  Logget ind som " + bold("Kasserer"));
+                    subMenuCashier(scanner);
                     break;
                 case 3:
-                    deleteMember(scanner);
-                    returnToMenu(scanner);
+                    System.out.println("\n🔐  Logget ind som " + bold("Træner"));
+                    subMenuTrainer(scanner);
                     break;
-                case 4:
-                    memberDatabase.listMembers();
-                    returnToMenu(scanner);
-                    break;
-                case 5:
-                    System.out.println("Viser liste med medlemmer...");
-                    memberDatabase.listMembers();
-                    createSwimmers(scanner);
-                    returnToMenu(scanner);
-                    break;
-                case 6:
-                    swimmerDatabase.showSwimmerList();
-                    returnToMenu(scanner);
-                    break;
-                case 7:
-                    swimmerDatabase.top5ListForSvimmwers();
-                    returnToMenu(scanner);
-                    break;
-                case 8:
-                    System.out.println("Opretter konkurrencesvømmer");
-                    addSwimmerToCompetition(scanner);
-                    returnToMenu(scanner);
-                    break;
-                case 9:
-                    System.out.println("Viser liste med konkurrencesvømmer");
-                    competitionDatabase.showAllCompetitors();
-                    returnToMenu(scanner);
-                    break;
-                case 10:
-                    System.out.println("......kontingent");
-                    System.out.println("mangler");
-                    returnToMenu(scanner);
-                    break;
-                case 11:
-                    System.out.println("\n🔴 Afslutter programmet...");
+                case 0:
+                    System.out.println(red("\n🔴  Afslutter programmet..."));
                     return;
                 default:
-                    System.out.println("Ugyldigt valg. Prøv igen.");
+                    System.out.println(red("\n⚠  Ugyldigt valg – prøv igen."));
+            }
+            } catch (NumberFormatException e) { //Catches anything other than int inputs
+                System.out.println(red("\n⚠  Indtast et tal mellem 0 og 3."));
+            }
+        }
+    }
+
+    // Chairman (Formand) submenu method that calls other methods
+    private void subMenuChairman (Scanner scanner) {
+
+        while (true) {
+
+            System.out.println(cyan("\n👔  FORMANDS‑MENU"));
+            System.out.println(cyan("----------------"));
+            System.out.println(blue("1️⃣  ➕  Opret medlem"));
+            System.out.println(yellow("2️⃣  ✏️  Rediger medlem"));
+            System.out.println(red("3️⃣  🗑️  Slet medlem"));
+            System.out.println(green("4️⃣  📋  Vis alle medlemmer"));
+            System.out.println(magenta("0️⃣  🔙  Tilbage til hovedmenu"));
+            System.out.print(magenta("\nVælg en mulighed ➜ "));
+
+            try {
+                int choice = Integer.parseInt(scanner.nextLine()); //Reads input as String and parse (change) to int
+
+                switch (choice) {
+                    case 1:
+                        System.out.println(green("\n➕  Opretter medlem ..."));
+                        createMember(scanner);
+                        returnToMenu(scanner);
+                        break;
+                    case 2:
+                        System.out.println(yellow("\n✏️  Redigerer medlem ..."));
+                        editMember(scanner);
+                        returnToMenu(scanner);
+                        break;
+                    case 3:
+                        System.out.println(red("\n🗑️  Sletter medlem ..."));
+                        deleteMember(scanner);
+                        returnToMenu(scanner);
+                        break;
+                    case 4:
+                        System.out.println(green("\n📋  Medlemsliste"));
+                        memberDatabase.listMembers();
+                        returnToMenu(scanner);
+                        break;
+                    case 0:
+                        System.out.println(magenta("\n🔙  Tilbage til hovedmenuen ..."));
+                        return; // Exit submenu
+                    default:
+                        System.out.println(red("\n⚠  Ugyldigt valg – prøv igen."));
                 }
             } catch (NumberFormatException e) { //Catches anything other than int inputs
-                System.out.println("\n⚠ Fejl: Indtast et gyldigt tal mellem 1 og 10");
+                System.out.println(red("\n⚠  Indtast et tal mellem 0 og 4."));
+            }
+        }
+    }
+
+    // Cashier (kasserer) submenu method that calls other methods
+    private void subMenuCashier (Scanner scanner) {
+
+        while (true) {
+
+            System.out.println(cyan("\n💰  KASSERER‑MENU"));
+            System.out.println(cyan("-----------------"));
+            System.out.println(yellow("1️⃣    kontingent (mangler)"));
+            System.out.println(magenta("0️⃣  🔙  Tilbage til hovedmenu"));
+            System.out.print(magenta("\nVælg en mulighed ➜ "));
+
+            try {
+                int choice = Integer.parseInt(scanner.nextLine()); //Reads input as String and parse (change) to int
+
+                switch (choice) {
+                    case 1:
+                        System.out.println(yellow("\n  ......kontingent"));
+                        returnToMenu(scanner);
+                        break;
+                    case 0:
+                        System.out.println(magenta("\n🔙  Tilbage til hovedmenuen ..."));
+                        return;
+                    default:
+                        System.out.println(red("\n⚠  Ugyldigt valg – prøv igen."));
+                }
+            } catch (NumberFormatException e) { //Catches anything other than int inputs
+                System.out.println(red("\n⚠  Indtast et tal mellem 0 og 1."));
+            }
+        }
+    }
+
+    // Trainer (træner) submenu method that calls other methods
+    private void subMenuTrainer (Scanner scanner) {
+
+        while (true) {
+
+            System.out.println(cyan("\n🏊‍♂️  TRÆNER‑MENU"));
+            System.out.println(cyan("----------------"));
+            System.out.println(blue("1️⃣  ➕  Opret svømmer"));
+            System.out.println(green("2️⃣  📋  Vis alle svømmere"));
+            System.out.println(yellow("3️⃣  🏆  Top 5 svømmere"));
+            System.out.println(blue("4️⃣  ➕  Opret konkurrencesvømmer"));
+            System.out.println(green("5️⃣  📋  Vis konkurrencesvømmere"));
+            System.out.println(magenta("0️⃣  🔙  Tilbage til hovedmenu"));
+            System.out.print(magenta("\nVælg en mulighed ➜ "));
+
+            try {
+                int choice = Integer.parseInt(scanner.nextLine()); //Reads input as String and parse (change) to int
+
+                switch (choice) {
+                    case 1:
+                        System.out.println(green("\n📋  Medlemsliste"));
+                        memberDatabase.listMembers();
+                        System.out.println(blue("\n➕  Opretter ny svømmer ..."));
+                        createSwimmers(scanner);
+                        returnToMenu(scanner);
+                        break;
+                    case 2:
+                        System.out.println(green("\n📋  Viser alle svømmere ..."));
+                        swimmerDatabase.showSwimmerList();
+                        returnToMenu(scanner);
+                        break;
+                    case 3:
+                        System.out.println(yellow("\n🏆  Viser alle top 5 svømmere ..."));
+                        swimmerDatabase.top5ListForSvimmwers();
+                        returnToMenu(scanner);
+                        break;
+                    case 4:
+                        System.out.println(yellow("\n🏆  Viser alle top 5 svømmere ..."));
+                        swimmerDatabase.top5ListForSvimmwers();
+                        System.out.println(blue("\n➕  Opretter konkurrencesvømmer ..."));
+                        addSwimmerToCompetition(scanner);
+                        returnToMenu(scanner);
+                        break;
+                    case 5:
+                        System.out.println(green("\n📋  Viser alle Konkurrence‑svømmere ..."));
+                        competitionDatabase.showAllCompetitors();
+                        returnToMenu(scanner);
+                        break;
+                    case 0:
+                        System.out.println(magenta("\n🔙  Tilbage til hovedmenuen ..."));
+                        return; // Exit submenu
+                    default:
+                        System.out.println(red("\n⚠  Ugyldigt valg – prøv igen."));
+                }
+            } catch (NumberFormatException e) { //Catches anything other than int inputs
+                System.out.println(red("\n⚠  Indtast et tal mellem 0 og 5."));
             }
         }
     }
@@ -217,13 +320,13 @@ public class Menu {
     //Method that returns to start of the menu
     private void returnToMenu (Scanner scanner) {
         while (true) {
-            System.out.print("\n🔄 Tryk (1) for at gå tilbage til menuen: ");
+            System.out.print("\n🔄 Tryk (1) for at gå tilbage: ");
             String input = scanner.nextLine().trim();
 
             if (input.equals("1")) {
                 return;
             } else {
-                System.out.println("\n⚠ Ugyldigt input. Tryk (1) for at vende tilbage til menuen.");
+                System.out.println(red("\n⚠ Ugyldigt input. Tryk (1) for at vende tilbage til menuen."));
             }
         }
     }

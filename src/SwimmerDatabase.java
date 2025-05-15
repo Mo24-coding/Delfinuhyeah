@@ -152,7 +152,7 @@ public class SwimmerDatabase {
     }
 
     // TEST CODE - IKKE SLET
-/*
+
     public void populateTestSwimmers() {
         String[] juniorNames = {"Adam", "Emma", "Clara"};
         String[] seniorNames = {"Jonas", "Anna", "Mads"};
@@ -173,6 +173,6 @@ public class SwimmerDatabase {
             }
         }
     }
-*/
+
 
 }
