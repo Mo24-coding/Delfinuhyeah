@@ -1,5 +1,6 @@
+package model;
 
-public class Subscription implements dk.delfinen.FeeCalculable {
+public class Subscription implements FeeCalculable {
     public enum MembershipType {
         AKTIV,
         PASSIV

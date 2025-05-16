@@ -1,7 +1,5 @@
 package utility;
 
-import java.awt.*;
-
 // Funny Funny stuff - loading bar
 public class ProgressBar {
 

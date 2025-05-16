@@ -1,11 +1,15 @@
+package data;
+import model.Member;
+import model.SwimmerResult;
 import utility.InvalidTimeFormatException;
 import utility.SwimmerNotFoundException;
-
-import static utility.Colors.*;
-import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import static utility.Colors.*;
 
 public class SwimmerDatabase {
 

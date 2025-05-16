@@ -1,6 +1,7 @@
+package model;
 import java.time.LocalDate;
 
-public class SwimmerResult { // Class with all attributes etc needed for SwimmerDatabase class
+public class SwimmerResult { // Class with all attributes etc needed for data.SwimmerDatabase class
 
     public enum Discipline {
         CRAWL, BUTTERFLY, BRYSTSVØMNING, RYGCRAWL

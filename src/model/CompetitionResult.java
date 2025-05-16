@@ -1,4 +1,6 @@
-public class CompetitionResult { // Class with all attributes etc needed for CompetitionDatabase class
+package model;
+
+public class CompetitionResult { // Class with all attributes etc needed for data.CompetitionDatabase class
 
     public enum Competition {
         WORLD_SWIM_CUP, DANISH_SWIM_CUP

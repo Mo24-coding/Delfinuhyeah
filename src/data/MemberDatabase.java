@@ -1,3 +1,5 @@
+package data;
+import model.Member;
 import java.util.ArrayList;
 
 public class MemberDatabase {

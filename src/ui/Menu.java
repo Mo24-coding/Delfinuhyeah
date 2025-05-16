@@ -1,3 +1,10 @@
+package ui;
+import data.CompetitionDatabase;
+import data.MemberDatabase;
+import data.SwimmerDatabase;
+import model.CompetitionResult;
+import model.Member;
+import model.SwimmerResult;
 import utility.CustomException;
 import java.util.Scanner;
 import static utility.Colors.*;

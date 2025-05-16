@@ -1,6 +1,8 @@
+package data;
+import model.CompetitionResult;
+import model.Member;
 import utility.InvalidTimeFormatException;
 import utility.SwimmerNotFoundException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class CompetitionDatabase {
             throw new InvalidTimeFormatException(timeString); // Custom Exception for wrong time format
         }
 
-        // Creates a new CompetitionResult object and adds to competitors[] list
+        // Creates a new model.CompetitionResult object and adds to competitors[] list
         competitors.add(new CompetitionResult(memberId, competition, seconds, ranking));
         System.out.println("Konkurrence tilføjet for " + member.getName());
     }
