@@ -1,6 +1,7 @@
 package model;
 
-public class Subscription implements FeeCalculable {
+public class Subscription {
+
     public enum MembershipType {
         AKTIV,
         PASSIV
@@ -14,38 +15,25 @@ public class Subscription implements FeeCalculable {
         this.age = age;
     }
 
+    /**
+     * Beregner årligt kontingent ud fra medlemskab og alder.
+     * AKTIV:
+     *   Under 18 år: 1000 kr
+     *   18-59 år:    1600 kr
+     *   60+ år:      1200 kr (25% rabat)
+     * PASSIV:        500 kr
+     */
     public double calculateFee() {
-        double fee = 0;
-
         if (membershipType == MembershipType.PASSIV) {
-            fee = 500;
-        } else if (membershipType == MembershipType.AKTIV) {
+            return 500;
+        } else {
             if (age < 18) {
-                fee = 1000;
+                return 1000;
             } else if (age >= 60) {
-                fee = 1600 * 0.75; // 25% rabat for senior 60+
+                return 1200;
             } else {
-                fee = 1600;
+                return 1600;
             }
         }
-
-        return fee;
-    }
-
-    // Getters og setters
-    public MembershipType getMembershipType() {
-        return membershipType;
-    }
-
-    public void setMembershipType(MembershipType membershipType) {
-        this.membershipType = membershipType;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 }

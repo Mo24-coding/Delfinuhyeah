@@ -1,9 +1,10 @@
 package data;
+
 import java.io.*;
 import java.util.List;
 
 /**
- * data.FileHandler håndterer al fil-læsning og -skrivning for medlemmer og resultater.
+ * FileHandler håndterer al fil-læsning og -skrivning for medlemmer og resultater.
  * Gemmer og indlæser lister af objekter vha. serialization.
  */
 public class FileHandler {

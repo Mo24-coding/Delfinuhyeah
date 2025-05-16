@@ -1,10 +1,19 @@
 package data;
+
 import model.Member;
 import java.util.ArrayList;
 
 public class MemberDatabase {
+
     private ArrayList<Member> members = new ArrayList<>();
 
+    public double calculateTotalExpectedIncome() {
+        double total = 0;
+        for (Member m : members) {
+            total += m.calculateFee();
+        }
+        return total;
+    }
     public void addMember(Member member) {
         members.add(member);
     }

@@ -1,22 +1,28 @@
 package main;
+
 import data.CompetitionDatabase;
 import data.MemberDatabase;
 import data.SwimmerDatabase;
 import ui.Menu;
 import utility.ProgressBar;
+
 import java.util.Scanner;
 
-// Main class
 public class Club {
 
     public static void main(String[] args) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in); // Creates a scanner object
-        MemberDatabase memberDb = new MemberDatabase(); // Creates a MemberDatabase object
-        SwimmerDatabase swimmerDb = new SwimmerDatabase(memberDb); // Creates a SwimmerDataBase object using MemberDatabase
-        CompetitionDatabase competitionDB = new CompetitionDatabase(swimmerDb); // Creates a competitionDataBase object using SwimmerDatabase
-        Menu menu = new Menu(memberDb, swimmerDb, competitionDB); // Creates a Menu object using all databases
-        //swimmerDb.populateTestSwimmers();     // TEST CODE - IKKE SLET
-        ProgressBar.runProgressBar(100); // Progress bar
-        menu.showMenu(scanner); // Calls the showMenu method
+        Scanner scanner = new Scanner(System.in);
+
+        MemberDatabase memberDb = new MemberDatabase();
+        SwimmerDatabase swimmerDb = new SwimmerDatabase(memberDb);
+        CompetitionDatabase competitionDB = new CompetitionDatabase(swimmerDb);
+
+        Menu menu = new Menu(memberDb, swimmerDb, competitionDB);
+
+        //swimmerDb.populateTestSwimmers(); // TEST CODE - IKKE SLET
+
+        ProgressBar.runProgressBar(100);
+
+        menu.showMenu(scanner);
     }
 }
