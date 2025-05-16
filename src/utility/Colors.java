@@ -1,8 +1,10 @@
 package utility;
 
+// Funny Funny stuff - colors
 public class Colors {
 
-    // Funny Funny stuff
+
+    // Bunch of color methods for changing string text colors
 
     public static String red(String text) {
         return "\u001B[31m" + text + "\u001B[0m";

@@ -1,3 +1,6 @@
+import utility.InvalidTimeFormatException;
+import utility.SwimmerNotFoundException;
+
 import static utility.Colors.*;
 import java.util.*;
 import java.time.LocalDate;
@@ -28,8 +31,7 @@ public class SwimmerDatabase {
                 int secs = Integer.parseInt(parts[1]);
                 seconds = minutes * 60 + secs;
             } catch (Exception e) {
-                System.out.println("Ugyldigt tidsformat. Brug mm:ss.");
-                return;
+                throw new InvalidTimeFormatException(timeString); // Custom Exception for wrong time format
             }
 
             // Convert date string to localdate
@@ -46,7 +48,7 @@ public class SwimmerDatabase {
             SwimmerResult tr = new SwimmerResult(discipline, seconds, date, memberId);
             swimmers.add(tr);
         } else {
-            System.out.println("Medlem med ID " + memberId + " findes ikke som aktiv konkurrencesvømmer.");
+            throw new SwimmerNotFoundException(memberId); // Custom Exception for non "aktiv konkurrencesvømmer"
         }
     }
 

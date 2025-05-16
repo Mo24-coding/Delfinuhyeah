@@ -1,3 +1,6 @@
+import utility.InvalidTimeFormatException;
+import utility.SwimmerNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +17,7 @@ public class CompetitionDatabase {
         // Finds swimmer by ID
         Member member = swimmerDatabase.findSwimmerById(memberId);
         if (member == null) {
-            System.out.println("Ugyldigt medlem ID eller ikke en aktiv konkurrencesvømmer.");
-            return;
+            throw new SwimmerNotFoundException(memberId); // Custom Exception for non "aktiv konkurrencesvømmer"
         }
 
         // Converts time string from mm:ss to total seconds (double) for sorting and calculations
@@ -26,8 +28,7 @@ public class CompetitionDatabase {
             int secs = Integer.parseInt(parts[1]);
             seconds = minutes * 60 + secs;
         } catch (Exception e) {
-            System.out.println("Ugyldigt tidsformat. Brug mm:ss.");
-            return;
+            throw new InvalidTimeFormatException(timeString); // Custom Exception for wrong time format
         }
 
         // Creates a new CompetitionResult object and adds to competitors[] list

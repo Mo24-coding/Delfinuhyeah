@@ -1,3 +1,4 @@
+import utility.CustomException;
 import java.util.Scanner;
 import static utility.Colors.*;
 
@@ -289,8 +290,12 @@ public class Menu {
             System.out.print("Indtast dato (dd-MM-yyyy): ");
             String dato = scanner.nextLine();
 
-
-            swimmerDatabase.addSwimmer(memberId, disciplines, tid, dato);
+            try {
+                swimmerDatabase.addSwimmer(memberId, disciplines, tid, dato);
+                System.out.println(green("Svømmer oprettet..."));
+            } catch (CustomException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
 
     // Method that adds a swimmer to a competition (konkurrencesvømmer) from inputs
@@ -313,7 +318,12 @@ public class Menu {
         System.out.print("Indtast placering (Mellem 1-5): ");
         int ranking = Integer.parseInt(scanner.nextLine());
 
-        competitionDatabase.addCompetitionToList(memberId, competition, time, ranking);
+        try {
+            competitionDatabase.addCompetitionToList(memberId, competition, time, ranking);
+            System.out.println(green("Konkurrencesvømmer oprettet..."));
+        } catch (CustomException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
 
