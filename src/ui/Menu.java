@@ -117,7 +117,7 @@ public class Menu {
 
             System.out.println(cyan("\n💰  KASSERER‑MENU"));
             System.out.println(cyan("-----------------"));
-            System.out.println(yellow("1️⃣    kontingent (mangler)"));
+            System.out.println(yellow("1️⃣    kontingent "));
             System.out.println(magenta("0️⃣  🔙  Tilbage til hovedmenu"));
             System.out.print(magenta("\nVælg en mulighed ➜ "));
 
@@ -126,9 +126,13 @@ public class Menu {
 
                 switch (choice) {
                     case 1:
-                        System.out.println(yellow("\n  ......kontingent"));
+                        System.out.println(yellow("\n📋  Kontingentoversigt"));
+                        memberDatabase.listMembers();
+                        double total = memberDatabase.calculateTotalExpectedIncome();
+                        System.out.printf(green("\n💰 Forventet årlig indtægt i kontingent: %.2f kr.\n"), total);
                         returnToMenu(scanner);
                         break;
+
                     case 0:
                         System.out.println(magenta("\n🔙  Tilbage til hovedmenuen ..."));
                         return;

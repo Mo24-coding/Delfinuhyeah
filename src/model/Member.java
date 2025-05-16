@@ -19,6 +19,12 @@ public class Member {
         MOTIONIST,
         KONKURRENCE
     }
+    public double calculateFee() {
+        Subscription.MembershipType subType = isActive() ? Subscription.MembershipType.AKTIV : Subscription.MembershipType.PASSIV;
+        Subscription subscription = new Subscription(subType, age);
+        return subscription.calculateFee();
+    }
+
 
     // Constructor
     public Member(String name, int age, String phoneNumber, boolean isActive,

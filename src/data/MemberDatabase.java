@@ -35,6 +35,14 @@ public class MemberDatabase {
             );
         }
     }
+    public double calculateTotalExpectedIncome() {
+        double total = 0;
+        for (Member m : members) {
+            total += m.calculateFee();
+        }
+        return total;
+    }
+
 
     public void listMembers() {
         System.out.println("\n--- Alle medlemmer ---");
